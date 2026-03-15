@@ -32,8 +32,8 @@ html {
   height: -webkit-fill-available;
 }
 
-.screen{display:none;}
-.screen.active{display:block;}
+.screen{display:none;position:relative;}
+.screen.active{display:block;position:relative;top:0;}
 
 /* ═══════════════════════════
    FORM PAGE
@@ -162,7 +162,8 @@ html {
   min-height:100vh;
   background:linear-gradient(160deg,#1A0400 0%,#6B0000 50%,#1A0400 100%);
   display:flex;flex-direction:column;align-items:center;
-  padding:16px 10px 44px;
+  justify-content:flex-start;
+  padding:12px 10px 44px;
 }
 
 /* THE CERTIFICATE — compact, WhatsApp status friendly */
@@ -764,18 +765,12 @@ html {
 <!-- BUTTONS -->
 <div class="cert-actions">
 
-  <button class="act-btn btn-img" id="btn-img-save" onclick="saveImage()">
-    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-    Image Save करें (WhatsApp के लिए)
-  </button>
+
   <button class="act-btn btn-share" onclick="openShareModal()">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-    Share / Download करें
+    Image Save / Share करें
   </button>
-  <button class="act-btn btn-print" onclick="window.print()">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
-    Print / PDF
-  </button>
+
   <button class="act-btn btn-new" onclick="resetAll()">↩ नया भागीदारी पत्र</button>
 </div>
 
@@ -800,7 +795,7 @@ html {
 <!-- SHARE MODAL -->
 <div class="share-modal-overlay" id="share-modal" onclick="closeShareModal(event)">
   <div class="share-modal">
-    <div class="share-modal-title">📤 Share / Download करें</div>
+    <div class="share-modal-title">🖼️ Image Save / Share करें</div>
     <div class="share-options">
 
       <!-- PNG Image -->
@@ -813,25 +808,7 @@ html {
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C8960C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
 
-      <!-- PDF -->
-      <div class="share-opt" onclick="shareAsPDF()">
-        <div class="share-opt-icon" style="background:#FFF0F0;">📄</div>
-        <div class="share-opt-info">
-          <div class="share-opt-title">PDF Save / Share</div>
-          <div class="share-opt-sub">Print ke liye, WhatsApp pe document share</div>
-        </div>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C8960C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-      </div>
-
-      <!-- WhatsApp Link -->
-      <div class="share-opt" onclick="shareWA();closeShareModal();">
-        <div class="share-opt-icon" style="background:#F0FFF4;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.528 5.847L.057 23.5l5.797-1.519A11.934 11.934 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.007-1.374l-.36-.214-3.717.974.99-3.617-.234-.371A9.818 9.818 0 112 12 9.818 9.818 0 0112 21.818z"/></svg>
-        </div>
-        <div class="share-opt-info">
-          <div class="share-opt-title">WhatsApp Link Bhejein</div>
-          <div class="share-opt-sub">Certificate ka link + message</div>
-        </div>
+    </div>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C8960C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
 
@@ -914,12 +891,21 @@ function generateCert() {
   setTimeout(function() {
     document.getElementById('cert-name').textContent = name;
     showScreen('screen-cert');
-    // Extra scroll fix for iOS
+    // Multi-pass scroll fix for all browsers + iOS
+    window.scrollTo(0,0);
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
     setTimeout(function(){
       window.scrollTo(0,0);
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
-    }, 50);
+      // Scroll certificate itself into view
+      var cert = document.getElementById('certificate');
+      if (cert) cert.scrollIntoView({block:'start', behavior:'instant'});
+    }, 100);
+    setTimeout(function(){
+      window.scrollTo(0,0);
+    }, 300);
   }, 900);
 }
 
@@ -942,11 +928,17 @@ function showHint(id,t,m){var e=document.getElementById(id);e.textContent=m;e.cl
 function clearHint(id){var e=document.getElementById(id);e.style.display='none';e.textContent='';}
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
-  document.getElementById(id).classList.add('active');
-  // Instant scroll to top — no smooth (smooth causes delay on mobile)
-  window.scrollTo(0, 0);
+  var el = document.getElementById(id);
+  el.classList.add('active');
+  // Force scroll to absolute top
+  try {
+    window.scrollTo({top:0, left:0, behavior:'instant'});
+  } catch(e) {
+    window.scrollTo(0, 0);
+  }
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
+  el.scrollTop = 0;
 }
 function showPrivacy(){var c=document.querySelector('.screen.active');if(c)prevScreen=c.id;showScreen('screen-privacy');}
 function hidePrivacy(){showScreen(prevScreen);}
@@ -976,30 +968,7 @@ function shareAsPNG(){
   document.getElementById('btn-img-save').click();
 }
 
-// ── SHARE AS PDF ──
-function shareAsPDF(){
-  closeShareModal();
 
-  var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-
-  if (isIOS) {
-    // iOS — open print dialog (user can save as PDF from there)
-    setTimeout(function(){
-      window.print();
-      setTimeout(function(){
-        alert('Print dialog mein:\n"Save as PDF" select karein → Share → WhatsApp 🙏');
-      }, 500);
-    }, 300);
-    return;
-  }
-
-  // Android/Desktop — use html2canvas to create PDF via jsPDF
-  // Simpler: just trigger print dialog
-  var btn = document.createElement('button');
-  setTimeout(function(){
-    window.print();
-  }, 300);
-}
 
 // ── IMAGE SAVE ──
 function saveImage() {
