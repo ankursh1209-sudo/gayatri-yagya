@@ -841,7 +841,7 @@ html {
 </div>
 
 <script>
-var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxgvohiALBFdIgn9gusoza5fr2qiBqszKb-XbMnzv-sq-9HenFemFfSzXU3LUfvrwgDwg/exec';
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxiulx80BWWK5sae4Ap_gyLqtLVzIv5rQzZYvkhVZMR6r3C5MUNdVKoP8XDJghXSoneKw/exec';
 var certData = {}, prevScreen = 'screen-form', checkTimer = null;
 
 function onPhoneInput(el) {
@@ -868,7 +868,7 @@ function onNameInput(el) {
 
 function checkPhone(phone) {
   var el = document.getElementById('inp-phone');
-  if (SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbxgvohiALBFdIgn9gusoza5fr2qiBqszKb-XbMnzv-sq-9HenFemFfSzXU3LUfvrwgDwg/exec') {
+  if (SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbxiulx80BWWK5sae4Ap_gyLqtLVzIv5rQzZYvkhVZMR6r3C5MUNdVKoP8XDJghXSoneKw/exec') {
     el.style.borderColor = '#4CAF50';
     showHint('phone-hint','ok','✅ नंबर सही है। नाम भरें।');
     document.getElementById('inp-name').disabled = false;
@@ -907,7 +907,7 @@ function generateCert() {
   certData = {name:name, phone:phone, certId:certId};
   showScreen('screen-loading');
   // Save to Google Sheet (with security token)
-  fetch('https://script.google.com/macros/s/AKfycbxgvohiALBFdIgn9gusoza5fr2qiBqszKb-XbMnzv-sq-9HenFemFfSzXU3LUfvrwgDwg/exec?action=save&token='+atob('R1kyMDI2STVYQVI2SjFWUFQ2')+'&phone='+encodeURIComponent(phone)+'&name='+encodeURIComponent(name)+'&certId='+encodeURIComponent(certId))
+  fetch('https://script.google.com/macros/s/AKfycbxiulx80BWWK5sae4Ap_gyLqtLVzIv5rQzZYvkhVZMR6r3C5MUNdVKoP8XDJghXSoneKw/exec?action=save&token='+atob('R1kyMDI2STVYQVI2SjFWUFQ2')+'&phone='+encodeURIComponent(phone)+'&name='+encodeURIComponent(name)+'&certId='+encodeURIComponent(certId))
     .then(function(r){ return r.json(); })
     .then(function(d){ console.log('Sheet saved:', d); })
     .catch(function(e){ console.log('Sheet error (offline ok):', e); });
@@ -929,7 +929,7 @@ function shareWA() {
 }
 async function nativeShare() {
   if (navigator.share) {
-    try { await navigator.share({title:'गायत्री महायज्ञ भागीदारी पत्र', text:certData.name+' जी का भागीदारी पत्र', url:'https://ankursh1209-sudo.github.io/gayatri-yagya/'}); }
+    try { await navigator.share({title:'गायत्री महायज्ञ भागीदारी पत्र', text:certData.name+' जी का भागीदारी पत्र', url:'https://gayatri-yagya.vercel.app/'}); }
     catch(e) { if(e.name!=='AbortError') shareWA(); }
   } else shareWA();
 }
