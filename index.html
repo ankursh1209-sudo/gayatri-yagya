@@ -2,9 +2,12 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0, viewport-fit=cover"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover"/>
 <meta name="theme-color" content="#7A0000"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="screen-orientation" content="portrait"/>
+<meta name="x5-orientation" content="portrait"/>
+<meta name="x5-fullscreen" content="true"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="format-detection" content="telephone=no"/>
@@ -19,17 +22,50 @@
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html{scroll-behavior:smooth;}
+/* ── PORTRAIT LOCK ── */
+html {
+  height: -webkit-fill-available;
+}
 body{
   font-family:'Tiro Devanagari Hindi',serif;
   background:#2A0800;
   min-height:100vh;
   min-height: -webkit-fill-available;
   overflow-x:hidden;
-  /* iOS safe area */
   padding-bottom: env(safe-area-inset-bottom);
 }
-html {
-  height: -webkit-fill-available;
+
+/* Landscape — show rotate message */
+@media screen and (orientation:landscape) and (max-height:500px) {
+  body > .screen,
+  body > #share-modal {
+    display:none !important;
+  }
+  body::before {
+    content:'';
+    position:fixed;inset:0;
+    background:#1A0500;
+    z-index:9999;
+    display:flex;
+  }
+  body::after {
+    content:'📱 कृपया phone को Portrait (सीधा) रखें';
+    position:fixed;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    z-index:10000;
+    font-family:'Tiro Devanagari Hindi',serif;
+    font-size:18px;
+    color:#FFD700;
+    text-align:center;
+    background:#1A0500;
+    padding:24px 32px;
+    border-radius:12px;
+    border:2px solid #C8960C;
+    width:80vw;
+    line-height:1.8;
+    white-space:pre-line;
+  }
 }
 
 .screen{display:none;position:relative;}
@@ -823,6 +859,20 @@ html {
 </div>
 
 <script>
+// ── PORTRAIT MODE LOCK ──
+(function() {
+  // Screen Orientation API (Android Chrome, modern browsers)
+  if (screen.orientation && screen.orientation.lock) {
+    screen.orientation.lock('portrait').catch(function(){
+      // Silently fail if not supported
+    });
+  }
+  // Older API
+  if (screen.lockOrientation) screen.lockOrientation('portrait');
+  if (screen.mozLockOrientation) screen.mozLockOrientation('portrait');
+  if (screen.msLockOrientation) screen.msLockOrientation('portrait');
+})();
+
 var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxiulx80BWWK5sae4Ap_gyLqtLVzIv5rQzZYvkhVZMR6r3C5MUNdVKoP8XDJghXSoneKw/exec';
 var certData = {}, prevScreen = 'screen-form', checkTimer = null;
 
