@@ -35,38 +35,7 @@ body{
   padding-bottom: env(safe-area-inset-bottom);
 }
 
-/* Landscape — show rotate message */
-@media screen and (orientation:landscape) and (max-height:500px) {
-  body > .screen,
-  body > #share-modal {
-    display:none !important;
-  }
-  body::before {
-    content:'';
-    position:fixed;inset:0;
-    background:#1A0500;
-    z-index:9999;
-    display:flex;
-  }
-  body::after {
-    content:'📱 कृपया phone को Portrait (सीधा) रखें';
-    position:fixed;
-    top:50%;left:50%;
-    transform:translate(-50%,-50%);
-    z-index:10000;
-    font-family:'Tiro Devanagari Hindi',serif;
-    font-size:18px;
-    color:#FFD700;
-    text-align:center;
-    background:#1A0500;
-    padding:24px 32px;
-    border-radius:12px;
-    border:2px solid #C8960C;
-    width:80vw;
-    line-height:1.8;
-    white-space:pre-line;
-  }
-}
+
 
 .screen{display:none;position:relative;}
 .screen.active{display:block;position:relative;top:0;}
@@ -873,7 +842,7 @@ body{
   if (screen.msLockOrientation) screen.msLockOrientation('portrait');
 })();
 
-var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxiulx80BWWK5sae4Ap_gyLqtLVzIv5rQzZYvkhVZMR6r3C5MUNdVKoP8XDJghXSoneKw/exec';
+var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxc1pNw4kp89Aywc6YJ-yNTTikVbxNQeb-NHcAOy2Dr1hZH-CxBvTCbU2wrrxZAGBMvLQ/exec';
 var certData = {}, prevScreen = 'screen-form', checkTimer = null;
 
 function onPhoneInput(el) {
@@ -900,7 +869,7 @@ function onNameInput(el) {
 
 function checkPhone(phone) {
   var el = document.getElementById('inp-phone');
-  if (SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbxiulx80BWWK5sae4Ap_gyLqtLVzIv5rQzZYvkhVZMR6r3C5MUNdVKoP8XDJghXSoneKw/exec') {
+  if (SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbxc1pNw4kp89Aywc6YJ-yNTTikVbxNQeb-NHcAOy2Dr1hZH-CxBvTCbU2wrrxZAGBMvLQ/exec') {
     el.style.borderColor = '#4CAF50';
     showHint('phone-hint','ok','✅ नंबर सही है। नाम भरें।');
     document.getElementById('inp-name').disabled = false;
@@ -938,11 +907,22 @@ function generateCert() {
   var certId = 'GY-' + d.getFullYear() + pad(d.getMonth()+1) + pad(d.getDate()) + '-' + phone.slice(-4) + '-' + (Math.floor(Math.random()*9000)+1000);
   certData = {name:name, phone:phone, certId:certId};
   showScreen('screen-loading');
-  // Save to Google Sheet (with security token)
-  fetch('https://script.google.com/macros/s/AKfycbxiulx80BWWK5sae4Ap_gyLqtLVzIv5rQzZYvkhVZMR6r3C5MUNdVKoP8XDJghXSoneKw/exec?action=save&token='+atob('R1kyMDI2STVYQVI2SjFWUFQ2')+'&phone='+encodeURIComponent(phone)+'&name='+encodeURIComponent(name)+'&certId='+encodeURIComponent(certId))
-    .then(function(r){ return r.json(); })
-    .then(function(d){ console.log('Sheet saved:', d); })
-    .catch(function(e){ console.log('Sheet error (offline ok):', e); });
+  // Save to Google Sheet — no-cors mode (CORS bypass)
+  var saveUrl = 'https://script.google.com/macros/s/AKfycbxc1pNw4kp89Aywc6YJ-yNTTikVbxNQeb-NHcAOy2Dr1hZH-CxBvTCbU2wrrxZAGBMvLQ/exec?action=save&token='+atob('R1kyMDI2STVYQVI2SjFWUFQ2')+'&phone='+encodeURIComponent(phone)+'&name='+encodeURIComponent(name)+'&certId='+encodeURIComponent(certId);
+  
+  // Method 1: fetch with no-cors (works, response is opaque but data saves)
+  fetch(saveUrl, {
+    method: 'GET',
+    mode: 'no-cors',
+    cache: 'no-cache'
+  })
+  .then(function(){ console.log('Sheet save sent ✅'); })
+  .catch(function(){
+    // Method 2: Image beacon fallback
+    var img = new Image();
+    img.src = saveUrl;
+    console.log('Sheet save via beacon');
+  });
   setTimeout(function() {
     document.getElementById('cert-name').textContent = name;
     showScreen('screen-cert');
